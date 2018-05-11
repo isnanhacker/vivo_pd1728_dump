@@ -1,0 +1,23 @@
+on property:sys.fingerprint.boot=goodix_5288
+    chown system system /dev/goodix_fp
+    chmod 0644 /dev/goodix_fp
+    mkdir /persist/data 0700 system system
+    mkdir /data/vendor/fingerprint/gf5288/ 0770 system system
+    enable biometrics-fingerprint-gf5288
+
+# Notified from gf5288-restart-counter-sh
+on property:sys.fingerprint.stop=biometrics-fingerprint-gf5288
+    stop biometrics-fingerprint-gf5288
+
+service biometrics-fingerprint-gf5288 /vendor/bin/hw/vendor.vivo.hardware.biometrics.fingerprint@2.0-service-gf5288
+    class late_start
+    user system
+    group system sdcard_rw input
+    onrestart restart gf5288-restart-counter-sh
+    disabled
+
+service gf5288-restart-counter-sh /system/vendor/bin/sh /vendor/bin/init.vivo.fingerprint_restart_counter.sh biometrics-fingerprint-gf5288 5
+    user system
+    group system
+    disabled
+    oneshot

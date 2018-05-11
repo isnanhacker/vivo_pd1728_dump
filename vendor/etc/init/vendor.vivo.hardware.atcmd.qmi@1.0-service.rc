@@ -1,0 +1,14 @@
+service atcmd.qmi-hal-1-0 /vendor/bin/hw/vendor.vivo.hardware.atcmd.qmi@1.0-service
+    class hal
+    user root
+    group system
+    disabled
+
+on property:persist.sys.bbkem=1
+    start atcmd.qmi-hal-1-0
+
+on property:persist.sys.bbkem=2
+    restart atcmd.qmi-hal-1-0
+
+on property:persist.sys.bbkem=0
+    stop atcmd.qmi-hal-1-0

@@ -1,0 +1,15 @@
+# Synaptics HW Binder Licensed Source Release package.
+on property:sys.fingerprint.boot=udfp_syna_fs9501
+    chown system system /dev/vfsspi
+    chmod 0777 /dev/vfsspi
+    enable hal_fingerprint_synaptics
+
+on post-fs-data
+    mkdir  /data/vendor/fingerprint/fs9501  0770 system system
+    mkdir  /data/vendor/fingerprint/fs9501/ist  0770 system system
+
+service hal_fingerprint_synaptics /vendor/bin/hw/vendor.vivo.hardware.biometrics.fingerprint@2.0-service-fs9501
+    class late_start
+    user system
+    group system input
+    disabled
